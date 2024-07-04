@@ -32,26 +32,28 @@ const App=()=> {
             </ul>
           </div>
         </div>
-      </nav>
+      </nav>  
 
-      <Routes>
-        <Route path="/pages/:id" element={(
-          <Page/>
-        )}/>
-        <Route path="/admin" element={(
-          <>
-            <Admin></Admin>
-          </>
-        )}/>
-        <Route path="/" element={(
-          <>
-            <Home></Home>  
-          </>
-        )}/>
-        <Route path="*" element={(
-          <h3 className='text-center'>Not Found!</h3>
-        )}/>
-      </Routes>
+      <div className="container">
+        <Routes>
+          <Route path="/pages/:id" element={(
+            <Page/>
+          )}/>
+          <Route path="/admin" element={(
+            <>
+              <Admin></Admin>
+            </>
+          )}/>
+          <Route path="/" element={(
+            <>
+              <Home></Home>  
+            </>
+          )}/>
+          <Route path="*" element={(
+            <h3 className='text-center'>Not Found!</h3>
+          )}/>
+        </Routes>
+      </div>
     </>
   )
 }
