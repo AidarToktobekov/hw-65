@@ -1,6 +1,7 @@
-import { ChangeEvent, ChangeEventHandler, EventHandler, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import axiosApi from "../../axios-api";
 import { useNavigate } from "react-router-dom";
+
 
 const Admin =()=>{
     const [loading, setLoading] = useState(false);
@@ -9,6 +10,17 @@ const Admin =()=>{
     const [titleValue, setTitleValue] = useState('');
     const [contentValue, setContentValue] = useState('');
     const navigate = useNavigate();
+    let preloader = null;
+    
+    if (loading === true) {
+        preloader = (
+          <>
+              <div id="preloader">
+                <div className="loader"></div>
+              </div>
+          </>
+        );
+    }
 
     const getPage = async()=>{
         try {
@@ -16,17 +28,14 @@ const Admin =()=>{
             const response = await axiosApi.get('/pages/'+ selectValue +'.json'); 
             setTitleValue(response.data.title);
             setContentValue(response.data.content);
-
-            
           } finally {
-      
             setLoading(false); 
-      
           }
     }
     useEffect(()=>{
         void getPage();
-    },[selectValue])
+    },[selectValue]);
+
 
     const putPage = async(event:React.FormEvent)=>{
         event.preventDefault();
@@ -36,11 +45,11 @@ const Admin =()=>{
                 title: titleValue,
                 content: contentValue,
             }
-            const response = await axiosApi.put('/pages/'+ selectValue +'.json', newPage); 
+                const response = await axiosApi.put('/pages/'+ selectValue +'.json', newPage);
             
           } finally {
             setLoading(false);   
-            navigate('/pages/' + selectValue);
+            navigate('/pages/'+selectValue);
           }
     }
     
@@ -52,6 +61,7 @@ const Admin =()=>{
 
     return(
         <>  
+        {preloader}
             <h3>Edit pages</h3>
             <form onSubmit={putPage}>
                 <div className="mb-3">
@@ -71,7 +81,7 @@ const Admin =()=>{
                     <label className="form-check-label">Content</label>
                     <textarea rows={3} value={contentValue} onChange={(event:ChangeEvent<HTMLTextAreaElement>)=>{getFieldValue(event, setContentValue)}} className="form-control" />
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-light">Save</button>
             </form>
         </>
     )

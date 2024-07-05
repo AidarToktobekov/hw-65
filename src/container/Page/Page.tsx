@@ -9,29 +9,36 @@ const Page = ()=>{
     const [infoPage, setInfoPage] = useState({title:'', content: ''})
 
     const param = useParams();
-    console.log(param.id);
+    let preloader = null;
+    
+    if (loading === true) {
+        preloader = (
+          <>
+              <div id="preloader">
+                <div className="loader"></div>
+              </div>
+          </>
+        );
+    };
 
     const getPage = async()=>{
         try {
             setLoading(true);
             const response = await axiosApi.get('/pages/'+ param.id +'.json'); 
-            setInfoPage(response.data)
-            console.log(response.data);
-            
+            setInfoPage(response.data);
           } finally {
-      
             setLoading(false); 
-      
           }
     }
 
     useEffect(()=>{
         void getPage();
-    },[param.id])
+    },[param.id]);
     
 
     return(
         <>
+        {preloader}
         <div className="container">
             <h3>{infoPage.title}</h3>
             <p>{infoPage.content}</p>
